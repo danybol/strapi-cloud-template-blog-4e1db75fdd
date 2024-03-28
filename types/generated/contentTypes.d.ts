@@ -512,6 +512,8 @@ export interface PluginContentReleasesRelease extends Schema.CollectionType {
   attributes: {
     name: Attribute.String & Attribute.Required;
     releasedAt: Attribute.DateTime;
+    scheduledAt: Attribute.DateTime;
+    timezone: Attribute.String;
     actions: Attribute.Relation<
       'plugin::content-releases.release',
       'oneToMany',
@@ -576,6 +578,53 @@ export interface PluginContentReleasesReleaseAction
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'plugin::content-releases.release-action',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface PluginI18NLocale extends Schema.CollectionType {
+  collectionName: 'i18n_locale';
+  info: {
+    singularName: 'locale';
+    pluralName: 'locales';
+    collectionName: 'locales';
+    displayName: 'Locale';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  pluginOptions: {
+    'content-manager': {
+      visible: false;
+    };
+    'content-type-builder': {
+      visible: false;
+    };
+  };
+  attributes: {
+    name: Attribute.String &
+      Attribute.SetMinMax<
+        {
+          min: 1;
+          max: 50;
+        },
+        number
+      >;
+    code: Attribute.String & Attribute.Unique;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'plugin::i18n.locale',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'plugin::i18n.locale',
       'oneToOne',
       'admin::user'
     > &
@@ -734,53 +783,6 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
   };
 }
 
-export interface PluginI18NLocale extends Schema.CollectionType {
-  collectionName: 'i18n_locale';
-  info: {
-    singularName: 'locale';
-    pluralName: 'locales';
-    collectionName: 'locales';
-    displayName: 'Locale';
-    description: '';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  pluginOptions: {
-    'content-manager': {
-      visible: false;
-    };
-    'content-type-builder': {
-      visible: false;
-    };
-  };
-  attributes: {
-    name: Attribute.String &
-      Attribute.SetMinMax<
-        {
-          min: 1;
-          max: 50;
-        },
-        number
-      >;
-    code: Attribute.String & Attribute.Unique;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'plugin::i18n.locale',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'plugin::i18n.locale',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
 export interface ApiAboutAbout extends Schema.SingleType {
   collectionName: 'abouts';
   info: {
@@ -807,6 +809,125 @@ export interface ApiAboutAbout extends Schema.SingleType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::about.about',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiAppointmentSessionAppointmentSession
+  extends Schema.CollectionType {
+  collectionName: 'appointment_sessions';
+  info: {
+    singularName: 'appointment-session';
+    pluralName: 'appointment-sessions';
+    displayName: 'AppointmentSession';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    name: Attribute.String & Attribute.Required;
+    date: Attribute.Date & Attribute.Required;
+    appointment_slots: Attribute.Relation<
+      'api::appointment-session.appointment-session',
+      'oneToMany',
+      'api::appointment-slot.appointment-slot'
+    >;
+    restaurant: Attribute.Relation<
+      'api::appointment-session.appointment-session',
+      'manyToOne',
+      'api::restaurant.restaurant'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::appointment-session.appointment-session',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::appointment-session.appointment-session',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiAppointmentSlotAppointmentSlot
+  extends Schema.CollectionType {
+  collectionName: 'appointment_slots';
+  info: {
+    singularName: 'appointment-slot';
+    pluralName: 'appointment-slots';
+    displayName: 'AppointmentSlot';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    startTime: Attribute.DateTime & Attribute.Required;
+    endTime: Attribute.DateTime & Attribute.Required;
+    uuid: Attribute.UID & Attribute.Required;
+    appointment_session: Attribute.Relation<
+      'api::appointment-slot.appointment-slot',
+      'manyToOne',
+      'api::appointment-session.appointment-session'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::appointment-slot.appointment-slot',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::appointment-slot.appointment-slot',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiAppointmentSlotPatientAppointmentSlotPatient
+  extends Schema.CollectionType {
+  collectionName: 'appointment_slot_patients';
+  info: {
+    singularName: 'appointment-slot-patient';
+    pluralName: 'appointment-slot-patients';
+    displayName: 'AppointmentSlotPatient';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    patient: Attribute.Relation<
+      'api::appointment-slot-patient.appointment-slot-patient',
+      'oneToOne',
+      'api::patient.patient'
+    >;
+    appointment_slot: Attribute.Relation<
+      'api::appointment-slot-patient.appointment-slot-patient',
+      'oneToOne',
+      'api::appointment-slot.appointment-slot'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::appointment-slot-patient.appointment-slot-patient',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::appointment-slot-patient.appointment-slot-patient',
       'oneToOne',
       'admin::user'
     > &
@@ -938,6 +1059,36 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
   };
 }
 
+export interface ApiFoodTypeFoodType extends Schema.CollectionType {
+  collectionName: 'food_types';
+  info: {
+    singularName: 'food-type';
+    pluralName: 'food-types';
+    displayName: 'FoodType';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    Name: Attribute.String & Attribute.Required & Attribute.Unique;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::food-type.food-type',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::food-type.food-type',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiGlobalGlobal extends Schema.SingleType {
   collectionName: 'globals';
   info: {
@@ -971,6 +1122,73 @@ export interface ApiGlobalGlobal extends Schema.SingleType {
   };
 }
 
+export interface ApiPatientPatient extends Schema.CollectionType {
+  collectionName: 'patients';
+  info: {
+    singularName: 'patient';
+    pluralName: 'patients';
+    displayName: 'Patient';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    name: Attribute.String & Attribute.Required;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::patient.patient',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::patient.patient',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiRestaurantRestaurant extends Schema.CollectionType {
+  collectionName: 'restaurants';
+  info: {
+    singularName: 'restaurant';
+    pluralName: 'restaurants';
+    displayName: 'Restaurant';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    Name: Attribute.String & Attribute.Required & Attribute.Unique;
+    Description: Attribute.RichText;
+    uuid: Attribute.UID & Attribute.Required;
+    appointment_sessions: Attribute.Relation<
+      'api::restaurant.restaurant',
+      'oneToMany',
+      'api::appointment-session.appointment-session'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::restaurant.restaurant',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::restaurant.restaurant',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 declare module '@strapi/types' {
   export module Shared {
     export interface ContentTypes {
@@ -985,15 +1203,21 @@ declare module '@strapi/types' {
       'plugin::upload.folder': PluginUploadFolder;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
+      'plugin::i18n.locale': PluginI18NLocale;
       'plugin::users-permissions.permission': PluginUsersPermissionsPermission;
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
-      'plugin::i18n.locale': PluginI18NLocale;
       'api::about.about': ApiAboutAbout;
+      'api::appointment-session.appointment-session': ApiAppointmentSessionAppointmentSession;
+      'api::appointment-slot.appointment-slot': ApiAppointmentSlotAppointmentSlot;
+      'api::appointment-slot-patient.appointment-slot-patient': ApiAppointmentSlotPatientAppointmentSlotPatient;
       'api::article.article': ApiArticleArticle;
       'api::author.author': ApiAuthorAuthor;
       'api::category.category': ApiCategoryCategory;
+      'api::food-type.food-type': ApiFoodTypeFoodType;
       'api::global.global': ApiGlobalGlobal;
+      'api::patient.patient': ApiPatientPatient;
+      'api::restaurant.restaurant': ApiRestaurantRestaurant;
     }
   }
 }

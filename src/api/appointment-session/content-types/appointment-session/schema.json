@@ -1,0 +1,36 @@
+{
+  "kind": "collectionType",
+  "collectionName": "appointment_sessions",
+  "info": {
+    "singularName": "appointment-session",
+    "pluralName": "appointment-sessions",
+    "displayName": "AppointmentSession",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "date": {
+      "type": "date",
+      "required": true
+    },
+    "appointment_slots": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::appointment-slot.appointment-slot",
+      "mappedBy": "appointment_session"
+    },
+    "restaurant": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::restaurant.restaurant",
+      "inversedBy": "appointment_sessions"
+    }
+  }
+}

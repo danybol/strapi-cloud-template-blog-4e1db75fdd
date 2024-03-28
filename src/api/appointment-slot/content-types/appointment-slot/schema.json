@@ -1,0 +1,34 @@
+{
+  "kind": "collectionType",
+  "collectionName": "appointment_slots",
+  "info": {
+    "singularName": "appointment-slot",
+    "pluralName": "appointment-slots",
+    "displayName": "AppointmentSlot",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "startTime": {
+      "type": "datetime",
+      "required": true
+    },
+    "endTime": {
+      "type": "datetime",
+      "required": true
+    },
+    "uuid": {
+      "type": "uid",
+      "required": true
+    },
+    "appointment_session": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::appointment-session.appointment-session",
+      "inversedBy": "appointment_slots"
+    }
+  }
+}
