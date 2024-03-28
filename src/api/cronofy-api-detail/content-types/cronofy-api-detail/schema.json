@@ -1,0 +1,25 @@
+{
+  "kind": "collectionType",
+  "collectionName": "cronofy_api_details",
+  "info": {
+    "singularName": "cronofy-api-detail",
+    "pluralName": "cronofy-api-details",
+    "displayName": "CronofyApiDetail"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "client_id": {
+      "type": "string",
+      "required": true
+    },
+    "client_secret": {
+      "type": "string",
+      "required": true,
+      "unique": false,
+      "private": true
+    }
+  }
+}

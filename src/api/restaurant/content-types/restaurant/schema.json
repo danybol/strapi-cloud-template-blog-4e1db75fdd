@@ -29,6 +29,12 @@
       "relation": "oneToMany",
       "target": "api::appointment-session.appointment-session",
       "mappedBy": "restaurant"
+    },
+    "cronofy_connection": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::cronofy-connection.cronofy-connection",
+      "inversedBy": "restaurants"
     }
   }
 }

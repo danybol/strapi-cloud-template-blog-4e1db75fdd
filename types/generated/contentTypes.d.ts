@@ -1059,6 +1059,78 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
   };
 }
 
+export interface ApiCronofyApiDetailCronofyApiDetail
+  extends Schema.CollectionType {
+  collectionName: 'cronofy_api_details';
+  info: {
+    singularName: 'cronofy-api-detail';
+    pluralName: 'cronofy-api-details';
+    displayName: 'CronofyApiDetail';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    client_id: Attribute.String & Attribute.Required;
+    client_secret: Attribute.String & Attribute.Required & Attribute.Private;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::cronofy-api-detail.cronofy-api-detail',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::cronofy-api-detail.cronofy-api-detail',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiCronofyConnectionCronofyConnection
+  extends Schema.CollectionType {
+  collectionName: 'cronofy_connections';
+  info: {
+    singularName: 'cronofy-connection';
+    pluralName: 'cronofy-connections';
+    displayName: 'CronofyConnection';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    calendar_id: Attribute.String & Attribute.Required;
+    application_calendar_id: Attribute.String &
+      Attribute.Required &
+      Attribute.Unique;
+    restaurants: Attribute.Relation<
+      'api::cronofy-connection.cronofy-connection',
+      'oneToMany',
+      'api::restaurant.restaurant'
+    >;
+    sub: Attribute.String;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::cronofy-connection.cronofy-connection',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::cronofy-connection.cronofy-connection',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiFoodTypeFoodType extends Schema.CollectionType {
   collectionName: 'food_types';
   info: {
@@ -1171,6 +1243,11 @@ export interface ApiRestaurantRestaurant extends Schema.CollectionType {
       'oneToMany',
       'api::appointment-session.appointment-session'
     >;
+    cronofy_connection: Attribute.Relation<
+      'api::restaurant.restaurant',
+      'manyToOne',
+      'api::cronofy-connection.cronofy-connection'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1214,6 +1291,8 @@ declare module '@strapi/types' {
       'api::article.article': ApiArticleArticle;
       'api::author.author': ApiAuthorAuthor;
       'api::category.category': ApiCategoryCategory;
+      'api::cronofy-api-detail.cronofy-api-detail': ApiCronofyApiDetailCronofyApiDetail;
+      'api::cronofy-connection.cronofy-connection': ApiCronofyConnectionCronofyConnection;
       'api::food-type.food-type': ApiFoodTypeFoodType;
       'api::global.global': ApiGlobalGlobal;
       'api::patient.patient': ApiPatientPatient;

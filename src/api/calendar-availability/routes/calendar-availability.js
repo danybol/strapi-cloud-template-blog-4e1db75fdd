@@ -1,13 +1,13 @@
 module.exports = {
   routes: [
-    // {
-    //  method: 'GET',
-    //  path: '/calendar-availability',
-    //  handler: 'calendar-availability.exampleAction',
-    //  config: {
-    //    policies: [],
-    //    middlewares: [],
-    //  },
-    // },
+    {
+      method: 'GET',
+      path: '/calendar-availability/:id',
+      handler: 'calendar-availability.getAvailability',
+      config: {
+        policies: [],
+        middlewares: [],
+      },
+    },
   ],
 };

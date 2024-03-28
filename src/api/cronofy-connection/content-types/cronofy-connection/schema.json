@@ -1,0 +1,34 @@
+{
+  "kind": "collectionType",
+  "collectionName": "cronofy_connections",
+  "info": {
+    "singularName": "cronofy-connection",
+    "pluralName": "cronofy-connections",
+    "displayName": "CronofyConnection",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "calendar_id": {
+      "type": "string",
+      "required": true
+    },
+    "application_calendar_id": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "restaurants": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::restaurant.restaurant",
+      "mappedBy": "cronofy_connection"
+    },
+    "sub": {
+      "type": "string"
+    }
+  }
+}
